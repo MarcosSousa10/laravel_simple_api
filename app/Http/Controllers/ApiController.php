@@ -19,13 +19,48 @@ class ApiController extends Controller
     }
     public function  clients()
     {
-      //  $clients = Client::all();
-       $clients = Client::paginate(10);
-      return response()->json(
+        //  $clients = Client::all();
+        $clients = Client::paginate(10);
+        return response()->json(
             [
                 'status' => 'ok',
                 'message' => 'sucesso',
                 'data' => $clients
+            ],
+            200
+        );
+    }
+    public function clientsById($id)
+    {
+        $cliente = Client::find($id);
+        return response()->json(
+            [
+                'status' => 'ok',
+                'message' => 'sucesso',
+                'data' => $cliente
+            ],
+            200
+        );
+    }
+    public function client(Request $request)
+    {
+        if (!$request->id) {
+            return response()->json(
+                [
+                    'status' => 'error',
+                    'message' => 'Client ID is required',
+                ],
+                400
+            );
+        }
+
+
+        $cliente = Client::find($request->id);
+        return response()->json(
+            [
+                'status' => 'ok',
+                'message' => 'sucesso',
+                'data' => $cliente
             ],
             200
         );
